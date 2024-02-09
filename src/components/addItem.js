@@ -1,6 +1,7 @@
-import { storage } from ".././firebase";
-import { ref, uploadBytes, listAll, getDownloadURL } from "firebase/storage";
 import { useState, useEffect } from "react";
+import Item from "./Item";
+import { storage } from "../firebase";
+import { ref, uploadBytes, listAll, getDownloadURL } from "firebase/storage";
 import { v4 } from "uuid";
 
 const AddItem = () => {
@@ -52,14 +53,13 @@ const AddItem = () => {
         <div>
             <input
                 type="file"
-                onChange={(e) => {
-                    setItemImageToUpload(e.target.files[0]);
-                }}
+                onChange={(e) => setItemImageToUpload(e.target.files[0])}
             />
             <button onClick={uploadImage}>Upload Image</button>
 
+            {/* render item component for each item image url */}
             {itemImageUrls.map((url) => {
-                return <img src={url.url} alt="Item" key={url.key} />;
+                return <Item itemImg={itemImg} />;
             })}
         </div>
     );

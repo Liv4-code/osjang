@@ -1,4 +1,4 @@
-import AddItem from "./components/addItem";
+import AddItem from "./components/AddItem";
 
 const App = () => {
     return (
