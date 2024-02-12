@@ -84,11 +84,10 @@ import { ref, uploadBytes, getDownloadURL, listAll } from "firebase/storage";
 import { storage } from "../firebase";
 import { v4 } from "uuid";
 
-function App() {
+const AddItem = () => {
     const [imageUpload, setImageUpload] = useState(null);
     const [imageUrls, setImageUrls] = useState([]);
 
-    const imagesListRef = ref(storage, "images/");
     const uploadFile = () => {
         if (imageUpload == null) return;
         const imageRef = ref(storage, `images/${imageUpload.name + v4()}`);
@@ -100,6 +99,7 @@ function App() {
     };
 
     useEffect(() => {
+        const imagesListRef = ref(storage, "images/");
         listAll(imagesListRef).then((response) => {
             response.items.forEach((item) => {
                 getDownloadURL(item).then((url) => {
@@ -110,7 +110,7 @@ function App() {
     }, []);
 
     return (
-        <div className="App">
+        <div>
             <input
                 type="file"
                 onChange={(event) => {
@@ -125,6 +125,6 @@ function App() {
             </div>
         </div>
     );
-}
+};
 
-export default App;
+export default AddItem;
