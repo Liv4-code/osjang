@@ -8,7 +8,6 @@ const AddItem = () => {
     const inputRef = useRef();
     const [imageUpload, setImageUpload] = useState(null);
     const [imageUrls, setImageUrls] = useState([]);
-    const [selectedImgName, setSelectedImgName] = useState("");
 
     const uploadFile = () => {
         if (imageUpload == null) return;
@@ -22,8 +21,6 @@ const AddItem = () => {
 
     const handleInputChange = (event) => {
         setImageUpload(event.target.files[0]);
-        // console.log(typeof imageUpload);
-        // console.log(imageUpload);
     };
 
     useEffect(() => {
@@ -46,14 +43,23 @@ const AddItem = () => {
                 onChange={handleInputChange}
             />
             <button
+                className="bg-orange-300 text-lg font-semibold text-white rounded-2xl p-4"
                 onClick={() => {
                     inputRef.current.click();
                 }}
             >
-                Add Item
+                Add To Wardrobe
             </button>
-            <div>{imageUpload ? imageUpload.name : null}</div>
-            <button onClick={uploadFile}> Upload Image</button>
+
+            <div className="my-6">{imageUpload ? imageUpload.name : null}</div>
+            <button
+                className="bg-rose-600 text-lg font-semibold text-white rounded-2xl p-4"
+                onClick={uploadFile}
+            >
+                Save
+            </button>
+
+            {/* List of displayed wardrobe items */}
             <div className="flex flex-col items-center justify-center">
                 {imageUrls.map((url) => {
                     return <Item itemImg={url} key={v4()} />;
