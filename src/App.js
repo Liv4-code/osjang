@@ -1,12 +1,12 @@
-import AddItem from "./components/addItem";
+import AddItem from "./components/AddItem";
 
 const App = () => {
     return (
-        <div className="App">
+        <div className="App m-14">
             <header className="app-header">
-                <h1>My Osjang</h1>
+                <h1 className="text-6xl text-center font-bold">My Osjang</h1>
             </header>
-            <main className="app-main">
+            <main>
                 <AddItem />
             </main>
         </div>
