@@ -3,13 +3,17 @@ import { useRef } from "react";
 const AddItem = (imageUpload, handleInputChange, uploadFile) => {
     const inputRef = useRef();
 
+    const handleChange = () => {
+        return handleInputChange();
+    };
+
     return (
         <div>
             <input
                 className="hidden"
                 ref={inputRef}
                 type="file"
-                onChange={handleInputChange}
+                onChange={handleChange}
             />
             <button
                 className="bg-orange-300 text-lg font-semibold text-white rounded-2xl p-4"

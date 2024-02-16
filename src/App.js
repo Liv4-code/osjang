@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import AddItem from "./components/AddItem";
 import Item from "./components/Item";
+import Grid from "./layout/Grid";
 import { ref, uploadBytes, getDownloadURL, listAll } from "firebase/storage";
 import { storage } from "./firebase";
 import { v4 } from "uuid";
@@ -47,11 +48,11 @@ const App = () => {
                 />
 
                 {/* List of displayed wardrobe items */}
-                <div className="flex flex-col items-center justify-center">
+                <Grid>
                     {imageUrls.map((url) => {
                         return <Item itemImg={url} key={v4()} />;
                     })}
-                </div>
+                </Grid>
             </main>
         </div>
     );
