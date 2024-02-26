@@ -20,8 +20,8 @@ const App = () => {
         });
     };
 
-    const onInputChange = (event) => {
-        setImageUpload(event.target.files[0]);
+    const onInputChange = (e) => {
+        setImageUpload(e.target.files[0]);
     };
 
     useEffect(() => {
@@ -36,9 +36,11 @@ const App = () => {
     }, []);
 
     return (
-        <div className="App m-14">
+        <div className="App m-6">
             <header className="app-header">
-                <h1 className="text-6xl text-center font-bold">My Osjang</h1>
+                <h1 className="text-6xl text-center font-bold my-20">
+                    My Osjang
+                </h1>
             </header>
             <main>
                 <AddItem
