@@ -1,38 +1,49 @@
 import { useEffect, useState } from "react";
+import { storage, firestore } from "./firebase";
+import { ref, getDownloadURL, listAll } from "firebase/storage";
+import { collection, getDocs } from "firebase/firestore";
 import AddItem from "./components/AddItem";
 import Item from "./components/Item";
 import Grid from "./layout/Grid";
-import { ref, uploadBytes, getDownloadURL, listAll } from "firebase/storage";
-import { storage } from "./firebase";
 import { v4 } from "uuid";
 
 const App = () => {
-    const [imageUpload, setImageUpload] = useState(null);
-    const [imageUrls, setImageUrls] = useState([]);
+    const [itemImageUrls, setItemImageUrls] = useState([]);
 
-    const uploadFile = () => {
-        if (imageUpload == null) return;
-        const imageRef = ref(storage, `images/${imageUpload.name + v4()}`);
-        uploadBytes(imageRef, imageUpload).then((snapshot) => {
-            getDownloadURL(snapshot.ref).then((url) => {
-                setImageUrls((prev) => [...prev, url]);
-            });
-        });
-    };
-
-    const onInputChange = (e) => {
-        setImageUpload(e.target.files[0]);
-    };
-
-    useEffect(() => {
+    const listWardrobeItems = () => {
+        console.log("run func");
         const imagesListRef = ref(storage, "images/");
+
         listAll(imagesListRef).then((response) => {
             response.items.forEach((item) => {
                 getDownloadURL(item).then((url) => {
-                    setImageUrls((prev) => [...prev, url]);
+                    setItemImageUrls((data) => [...data, url]);
+                    console.log("state set");
                 });
             });
         });
+    };
+
+    const getWardrobe = () => {
+        const colRef = collection(firestore, "wardrobe");
+
+        getDocs(colRef)
+            .then((snapshot) => {
+                let items = [];
+                snapshot.docs.forEach((doc) => {
+                    items.push({ ...doc.data(), id: doc.id });
+                });
+                console.log(items);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+
+    useEffect(() => {
+        console.log("run useffect");
+        listWardrobeItems();
+        // getWardrobe();
     }, []);
 
     return (
@@ -43,15 +54,11 @@ const App = () => {
                 </h1>
             </header>
             <main>
-                <AddItem
-                    imageUpload={imageUpload}
-                    handleInputChange={onInputChange}
-                    uploadFile={uploadFile}
-                />
+                <AddItem setItemImageUrls={setItemImageUrls} />
 
                 {/* List of displayed wardrobe items */}
                 <Grid>
-                    {imageUrls.map((url) => {
+                    {itemImageUrls.map((url) => {
                         return <Item itemImg={url} key={v4()} />;
                     })}
                 </Grid>

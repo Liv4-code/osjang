@@ -1,7 +1,13 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import Storage from "../utilities/Storage";
 
-const AddItem = ({ imageUpload, handleInputChange, uploadFile }) => {
+const AddItem = ({ setItemImageUrls }) => {
     const inputRef = useRef();
+    const [imageToUpload, setImageToUpload] = useState(null);
+
+    const handleInputChange = (e) => {
+        setImageToUpload(e.target.files[0]);
+    };
 
     const handleSelectImage = (e) => {
         e.preventDefault();
@@ -9,7 +15,13 @@ const AddItem = ({ imageUpload, handleInputChange, uploadFile }) => {
     };
 
     return (
-        <form className="lg:w-1/3 md:w-1/2 flex flex-col rounded-lg bg-slate-50 shadow-lg p-12 m-auto">
+        <form
+            onSubmit={(e) => {
+                e.preventDefault();
+                Storage.uploadFile(imageToUpload, setItemImageUrls);
+            }}
+            className="lg:w-1/3 md:w-1/2 flex flex-col rounded-lg bg-slate-50 shadow-lg p-12 m-auto"
+        >
             <h3 className="my-6 text-xl font-bold">Add A Wardrobe Item</h3>
             <input
                 className="rounded-lg mb-6 p-3"
@@ -38,10 +50,12 @@ const AddItem = ({ imageUpload, handleInputChange, uploadFile }) => {
                 Select Item Image
             </button>
 
-            <div className="my-6">{imageUpload ? imageUpload.name : null}</div>
+            <div className="my-6">
+                {imageToUpload ? imageToUpload.name : null}
+            </div>
             <button
                 className="bg-rose-600 text-lg font-semibold text-white rounded-lg p-4"
-                onClick={uploadFile}
+                type="submit"
             >
                 Save
             </button>
